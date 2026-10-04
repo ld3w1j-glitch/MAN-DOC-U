@@ -1,6 +1,6 @@
 # Maná do Céu · Cardápio, pedidos e Status
 
-Versão 1.8.0. Projeto completo em **HTML, CSS, JavaScript, Python Flask e SQLite**, adaptado da estrutura InvitStore anexada. O cliente escolhe os pratos do dia, monta o pedido sem login e prepara uma mensagem completa para o atendimento no WhatsApp.
+Versão 1.9.0. Projeto completo em **HTML, CSS, JavaScript, Python Flask e SQLite**, adaptado da estrutura InvitStore anexada. O cliente escolhe os pratos do dia, monta o pedido sem login e prepara uma mensagem completa para o atendimento no WhatsApp.
 
 ## Começar no Windows
 

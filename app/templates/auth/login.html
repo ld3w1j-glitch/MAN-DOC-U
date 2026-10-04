@@ -1,1 +1,22 @@
-{% extends 'base.html' %}{% from 'partials/macros.html' import brand, csrf_field %}{% block title %}Painel · Maná do Céu{% endblock %}{% block header %}{% endblock %}{% block footer %}{% endblock %}{% block content %}<div class="login-layout"><aside class="login-story"><span class="eyebrow">MANÁ DO CÉU / ADMINISTRAÇÃO</span><h1>Um cuidado<br>em cada detalhe.</h1><img src="{{ url_for('static',filename='img/mana/17_avental.svg') }}" alt="" class="mana-login-art"><p>Cardápio, pedidos e atendimento<br>reunidos no seu espaço.</p><a href="{{ url_for('site.home') }}">Voltar ao cardápio</a></aside><div class="login-main"><a href="{{ url_for('site.home') }}">{{ brand() }}</a><div class="login-form"><h2>Acesso ao painel</h2><p class="muted">Entre para cuidar da marmitaria.</p>{% if error %}<div class="notice error" role="alert">{{ error }}</div>{% endif %}<form method="post">{{ csrf_field() }}<label for="email">E-mail</label><input type="email" id="email" name="email" autocomplete="username" maxlength="180" value="{{ request.form.get('email','') }}" required><label for="password">Senha</label><input type="password" id="password" name="password" autocomplete="current-password" maxlength="128" required><button class="button full">Entrar no painel</button></form><a class="mobile-store-link" href="{{ url_for('site.home') }}">Voltar ao cardápio</a></div></div></div>{% endblock %}
+{% extends 'base.html' %}{% from 'partials/macros.html' import brand, csrf_field %}{% block title %}Painel · Maná do Céu{% endblock %}{% block header %}{% endblock %}{% block footer %}{% endblock %}{% block content %}
+<div class="login-layout login-layout-brand">
+  <aside class="login-story login-story-poster" aria-label="Apresentação Maná do Céu">
+    <img src="{{ url_for('static',filename='img/login-admin-mana.png') }}" alt="Maná do Céu — Um cuidado em cada detalhe. Cardápio, pedidos e atendimento reunidos no seu espaço.">
+    <a class="login-story-back-overlay" href="{{ url_for('site.home') }}" aria-label="Voltar ao cardápio"></a>
+  </aside>
+  <div class="login-main">
+    <a href="{{ url_for('site.home') }}">{{ brand() }}</a>
+    <div class="login-form">
+      <h2>Acesso ao painel</h2>
+      <p class="muted">Entre para cuidar da marmitaria.</p>
+      {% if error %}<div class="notice error" role="alert">{{ error }}</div>{% endif %}
+      <form method="post">{{ csrf_field() }}
+        <label for="email">E-mail</label><input type="email" id="email" name="email" autocomplete="username" maxlength="180" value="{{ request.form.get('email','') }}" required>
+        <label for="password">Senha</label><input type="password" id="password" name="password" autocomplete="current-password" maxlength="128" required>
+        <button class="button full">Entrar no painel</button>
+      </form>
+      <a class="mobile-store-link" href="{{ url_for('site.home') }}">Voltar ao cardápio</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

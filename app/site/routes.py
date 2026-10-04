@@ -157,7 +157,7 @@ def media(filename):
 @site_bp.get('/health')
 def health():
     db.session.execute(select(1))
-    return {'status':'ok', 'app':'Mana do Ceu', 'version':'1.8.0'}
+    return {'status':'ok', 'app':'Mana do Ceu', 'version':'1.9.0'}
 
 def create_pending(seller, items, name='', notes='', contact=None, commit=True):
     from app.admin.management import product_cost

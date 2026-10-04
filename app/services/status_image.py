@@ -94,7 +94,10 @@ def rounded_mask(size, radius):
 def paste_rounded(base, im, xy, radius):
     rgba = im.convert('RGBA')
     mask = rounded_mask(rgba.size, radius)
-    base.alpha_composite(rgba, xy, mask)
+    # Pillow Image.alpha_composite() does not accept a mask as the third
+    # argument; that value is interpreted as a source box and raises ValueError.
+    # paste() is the correct masked-composition operation for rounded photos.
+    base.paste(rgba, xy, mask)
 
 
 def _phone_display(settings):

@@ -50,7 +50,7 @@ def create_app(test_config=None):
         from app.services.restaurant import settings as restaurant_settings, receiver
         from app.services.daily_menu import current_menu
         row = restaurant_settings()
-        return {'cart_count':sum(session.get('cart', {}).values()), 'version':'1.8.0', 'restaurant':row, 'attendant':receiver(row), 'daily_menu':current_menu()}
+        return {'cart_count':sum(session.get('cart', {}).values()), 'version':'1.9.0', 'restaurant':row, 'attendant':receiver(row), 'daily_menu':current_menu()}
 
     @app.after_request
     def headers(response):
