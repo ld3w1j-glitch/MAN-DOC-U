@@ -1,0 +1,26 @@
+{% from 'partials/macros.html' import icon, brand, csrf_field %}
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Escolha seu prato na Maná do Céu. Monte o pedido e combine entrega e pagamento com nosso atendimento pelo WhatsApp."><meta name="theme-color" content="#2664AE"><meta name="csrf-token" content="{{ csrf_token() }}"><title>{% block title %}Maná do Céu · Marmitaria{% endblock %}</title><link rel="icon" href="{{ url_for('static',filename='img/mana/01_tigela.svg') }}" type="image/svg+xml"><link rel="stylesheet" href="{{ url_for('static',filename='css/style.css',v='mana4') }}"><link rel="stylesheet" href="{{ url_for('static',filename='css/mana.css',v='mana4') }}"><script src="{{ url_for('static',filename='js/main.js',v='mana2') }}" defer></script><script src="{{ url_for('static',filename='js/mana.js',v='mana2') }}" defer></script>{% block head %}{% endblock %}</head><body class="mana-body {% block body_class %}{% endblock %}"><a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+{% block header %}<header class="mana-header"><div class="container mana-header-row"><a class="mana-logo" href="{{ url_for('site.home') }}" aria-label="Maná do Céu, início">{{ brand() }}</a><button class="mana-public-menu-button" type="button" aria-label="Abrir menu" aria-expanded="false" data-public-menu>{{ icon('menu') }}</button><nav class="mana-public-nav" aria-label="Principal" data-public-nav><a href="{{ url_for('site.home',_anchor='catalogo') }}">Cardápio</a><a href="{{ url_for('site.home',_anchor='como-pedir') }}">Como pedir</a><a href="{{ url_for('site.home',_anchor='contato') }}">Contato</a></nav><a class="mana-cart" href="{{ url_for('site.cart') }}">{{ icon('bag') }}<span>Meu pedido</span><b>{{ cart_count }}</b></a></div></header>{% endblock %}
+{% block body_layout %}<main id="conteudo">{% include 'partials/flashes.html' %}{% block content %}{% endblock %}</main>{% endblock %}
+{% block footer %}<footer class="mana-footer">
+  <div class="mana-brand-strip" aria-hidden="true">
+    <div class="container mana-brand-strip-inner">
+      <span class="mana-strip-symbol mana-strip-wave mana-strip-cream"></span>
+      <span class="mana-strip-symbol mana-strip-steam mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-heart mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-utensils mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-wave mana-strip-cream"></span>
+      <span class="mana-strip-symbol mana-strip-bowl mana-strip-orange mana-strip-featured"></span>
+      <span class="mana-strip-symbol mana-strip-wave mana-strip-cream"></span>
+      <span class="mana-strip-symbol mana-strip-utensils mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-heart mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-steam mana-strip-orange"></span>
+      <span class="mana-strip-symbol mana-strip-wave mana-strip-cream"></span>
+    </div>
+  </div>
+  <div class="container mana-footer-main"><div>{{ brand() }}<p>Sabor de casa, feito com capricho.</p></div><div><strong>Você escolhe. A gente capricha.</strong>{% if restaurant.hours_text %}<p>{{ restaurant.hours_text }}</p>{% endif %}{% if restaurant.pickup_address %}<p>Retirada: {{ restaurant.pickup_address }}</p>{% endif %}<a href="{{ url_for('auth.login') }}">Área administrativa</a></div></div>
+  <div class="container mana-footer-bottom"><span>Maná do Céu · Marmitaria</span></div>
+  <div class="mana-creator-signature">
+    <img src="{{ url_for('static',filename='img/washington-oliveira-assinatura.png') }}" alt="Washington Oliveira — Design, Código e Imagem">
+  </div>
+</footer>{% endblock %}</body></html>

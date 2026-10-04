@@ -1,0 +1,253 @@
+/* InvitStore 2.4.1 — movimento com o ritmo acolhedor da marca.
+   Entradas únicas, ornamentos originais e nenhuma dependência externa.
+   O conteúdo continua visível mesmo sem JavaScript. */
+:root {
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --campaign-duration: 6500ms;
+}
+
+/* URLs no CSS: compatível com a política de segurança, sem estilo inline. */
+.campaign-slide--01 { --campaign-image: url('../img/carousel/invitstore-01.webp'); }
+.campaign-slide--02 { --campaign-image: url('../img/carousel/invitstore-02.webp'); }
+.campaign-slide--03 { --campaign-image: url('../img/carousel/invitstore-03.webp'); }
+.campaign-slide--04 { --campaign-image: url('../img/carousel/invitstore-04.webp'); }
+.campaign-slide--05 { --campaign-image: url('../img/carousel/invitstore-05.webp'); }
+.campaign-carousel [hidden] { display: none !important; }
+.campaign-slide { transition: opacity 750ms ease, visibility 750ms; }
+.campaign-slide > img,
+.campaign-slide.is-active > img { transform: none; transition: none; }
+.campaign-carousel.is-enhanced .campaign-slide.is-active > img {
+  animation: invit-photo var(--campaign-duration) ease-out both;
+  animation-play-state: paused;
+}
+.campaign-carousel.is-playing .campaign-slide.is-active > img {
+  animation-play-state: running;
+}
+.campaign-carousel.is-enhanced .campaign-slide.is-active .campaign-caption > * {
+  animation: invit-caption 640ms var(--motion-ease) backwards;
+}
+.campaign-caption > small { animation-delay: 100ms !important; }
+.campaign-caption > strong { animation-delay: 180ms !important; }
+.campaign-caption > em { animation-delay: 260ms !important; }
+.campaign-caption em::after {
+  content: ' →';
+  display: inline-block;
+  margin-left: .35rem;
+  transition: transform 220ms var(--motion-ease);
+}
+.campaign-slide:focus-visible { outline: 3px solid var(--cream); outline-offset: -7px; }
+.campaign-slide:focus-visible .campaign-caption > * { animation: none !important; }
+.campaign-slide:focus-visible .campaign-caption em::after { transform: translateX(3px); }
+
+/* O indicador acompanha o tempo restante e congela junto com a foto. */
+.campaign-progress i {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.campaign-progress i.is-running {
+  animation: invit-progress var(--campaign-duration) linear both;
+  animation-play-state: paused;
+}
+.campaign-carousel.is-playing .campaign-progress i.is-running { animation-play-state: running; }
+
+/* Alvos confortáveis, sem aumentar visualmente os pequenos marcadores. */
+.campaign-dots { gap: 0; padding: 2px 5px; bottom: 15px; }
+.campaign-dot,
+.campaign-dot.is-active {
+  position: relative;
+  width: 32px;
+  height: 36px;
+  background: transparent;
+  border: 0;
+  border-radius: 18px;
+  transition: none;
+}
+.campaign-dot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--cream);
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  transition: width 240ms var(--motion-ease), background 240ms;
+}
+.campaign-dot.is-active::before { width: 22px; background: var(--terracotta); }
+.campaign-toggle { width: 44px; height: 44px; bottom: 13px; right: 20px; }
+.campaign-toggle:disabled { opacity: .7; }
+.campaign-arrow:focus-visible,
+.campaign-dot:focus-visible,
+.campaign-toggle:focus-visible { outline-color: var(--cream); outline-offset: 2px; }
+
+/* Não existe estado "escondido": somente uma animação de chegada. */
+.motion-step-0 { --motion-delay: 0ms; }
+.motion-step-1 { --motion-delay: 70ms; }
+.motion-step-2 { --motion-delay: 140ms; }
+.motion-step-3 { --motion-delay: 210ms; }
+.motion-item.is-revealing {
+  animation: invit-arrive 680ms var(--motion-ease) var(--motion-delay, 0ms) backwards;
+}
+.motion-item.is-revealing:focus-within { animation: none; }
+.brand-intro > .text-link { display: inline-block; }
+.catalog > .section-heading.is-revealing h2::after {
+  transform-origin: left;
+  animation: invit-underline 800ms var(--motion-ease) 180ms backwards;
+}
+
+/* Volutas abrem levemente; estrelas e ilustrações se acomodam no papel. */
+.ornamental-divider.is-revealing,
+.footer-ornament.is-revealing { animation: none; }
+.ornamental-divider.is-revealing img:first-child {
+  transform-origin: right center;
+  animation: invit-unfurl-left 1000ms var(--motion-ease) backwards;
+}
+.ornamental-divider.is-revealing img:last-child {
+  transform-origin: left center;
+  animation: invit-unfurl-right 1000ms var(--motion-ease) backwards;
+}
+.ornamental-divider.is-revealing img:nth-child(2),
+.footer-ornament.is-revealing img:nth-child(2) {
+  animation: invit-stamp 1000ms var(--motion-ease) 100ms backwards;
+}
+.brand-intro > img.is-revealing {
+  animation: invit-intro-star 1200ms var(--motion-ease) backwards;
+}
+.brand-category.is-revealing > img {
+  transform-origin: center 85%;
+  animation: invit-illustration 1000ms var(--motion-ease) var(--motion-delay, 0ms) backwards;
+}
+.editorial-cta.is-revealing .editorial-cta-art {
+  animation: invit-illustration 1100ms var(--motion-ease) 160ms backwards;
+}
+.editorial-cta .button { overflow: hidden; }
+.editorial-cta .button::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, #f6efdf24, transparent);
+  transform: translateX(-160%) skewX(-16deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.editorial-cta.is-revealing .button::before {
+  animation: invit-paper-light 1000ms ease 450ms backwards;
+}
+
+/* Microinterações também funcionam com teclado; sem alterar a logo. */
+.storefront .button,
+.storefront .gallery-thumb {
+  transition: transform 220ms var(--motion-ease), background 220ms, border-color 220ms, box-shadow 220ms;
+}
+.storefront .category-tabs a { transition: color 180ms, background 180ms, border-color 180ms; }
+.storefront .brand-category > img { transition: transform 450ms var(--motion-ease); }
+.storefront .product-card:focus-within {
+  border-color: var(--earth);
+  box-shadow: 0 16px 32px #3e2a1f18;
+}
+.storefront .product-card:focus-within .product-view { opacity: 1; transform: translate(-50%, 0); }
+.storefront .round-link:focus-visible { background: var(--terracotta); }
+.storefront .main-nav > a:focus-visible::after { right: 0; }
+.storefront .button:active { transform: translateY(1px) scale(.99); }
+.storefront #catalogo { scroll-margin-top: 190px; }
+.storefront #conteudo { scroll-margin-top: 190px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .campaign-slide:hover .campaign-caption em::after { transform: translateX(3px); }
+  .storefront .button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px #3e2a1f18; }
+  .storefront .button:active { transform: translateY(0) scale(.99); }
+  .storefront .gallery-thumb:hover { transform: translateY(-2px); }
+  .storefront .brand-category:hover > img { transform: translateY(-3px) rotate(-3deg); }
+}
+@media (hover: none) {
+  .storefront .product-card:hover,
+  .storefront .product-card:hover .product-photo > img,
+  .storefront .brand-category:hover,
+  .storefront .round-link:hover { transform: none; }
+}
+@media (max-width: 900px) {
+  .product-grid > .motion-item:nth-child(2n + 1),
+  .brand-categories > .motion-item:nth-child(2n + 1) { --motion-delay: 0ms; }
+  .product-grid > .motion-item:nth-child(2n),
+  .brand-categories > .motion-item:nth-child(2n) { --motion-delay: 70ms; }
+}
+@media (max-width: 650px) {
+  /* Mantém as fotos verticais proporcionais à arte original. */
+  .campaign-track { height: auto; min-height: 0; aspect-ratio: 4 / 5; }
+  .campaign-slide::after {
+    display: block;
+    z-index: 2;
+    background: linear-gradient(0deg, #24140fd9, #24140f80 26%, transparent 53%);
+  }
+  .campaign-arrow { width: 44px; height: 44px; }
+  .campaign-dots { bottom: 11px; left: 10px; }
+  .campaign-toggle { bottom: 10px; right: 10px; }
+  .campaign-caption { bottom: 4.6rem; }
+  .motion-item.is-revealing { animation-duration: 520ms; }
+  .storefront #catalogo,
+  .storefront #conteudo { scroll-margin-top: 215px; }
+}
+
+@keyframes invit-arrive {
+  from { opacity: 0; translate: 0 18px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes invit-caption {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes invit-photo { from { transform: scale(1); } to { transform: scale(1.03); } }
+@keyframes invit-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes invit-underline { from { transform: scaleX(.15); } to { transform: scaleX(1); } }
+@keyframes invit-unfurl-left {
+  from { opacity: 0; transform: translateX(12px) rotate(-7deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes invit-unfurl-right {
+  from { opacity: 0; transform: translateX(-12px) rotate(7deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes invit-stamp {
+  from { opacity: 0; transform: scale(.86) rotate(-16deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes invit-intro-star {
+  from { opacity: 0; transform: scale(.9) rotate(-12deg); }
+  to { opacity: 1; transform: rotate(10deg); }
+}
+@keyframes invit-illustration {
+  from { opacity: .25; transform: translateY(8px) rotate(-5deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes invit-paper-light {
+  0% { opacity: 0; transform: translateX(-160%) skewX(-16deg); }
+  25%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(380%) skewX(-16deg); }
+}
+
+/* Preferência acessível, inclusive quando alterada com a página aberta. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  body *, body *::before, body *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .campaign-slide.is-active > img,
+  .storefront .product-card:hover,
+  .storefront .product-card:hover .product-photo > img,
+  .storefront .brand-category:hover,
+  .storefront .brand-category:hover > img,
+  .storefront .round-link:hover,
+  .storefront .button:hover,
+  .storefront .button:active,
+  .storefront .gallery-thumb:hover { transform: none !important; }
+  .campaign-progress { display: none; }
+}
+@media print {
+  .motion-item, .motion-item *, .motion-item *::before, .motion-item *::after { animation: none !important; }
+  [data-carousel-control] { display: none !important; }
+}

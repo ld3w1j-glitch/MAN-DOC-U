@@ -1,0 +1,21 @@
+MANÁ DO CÉU - COMO COMEÇAR
+
+1. Extraia tudo em uma pasta nova.
+2. No Windows, abra start_windows.bat e crie sua primeira conta.
+3. Acesse /login. Configure ATENDIMENTO, incluindo o WhatsApp real.
+4. Cadastre os itens com fotos, preços e tamanhos reais.
+   Escolha PRATOS DO DIA, BEBIDAS ou SOBREMESAS no campo Categoria.
+5. Abra CARDÁPIO DO DIA e marque os itens de cada categoria para a data.
+6. Clique PUBLICAR E GERAR STATUS. Baixe o PNG e poste no WhatsApp.
+
+O cliente escolhe no cardápio e informa entrega, endereço e pagamento.
+A mensagem é preparada no site; ele ainda precisa enviá-la no WhatsApp.
+
+Guia completo: README.md
+Publicação no Railway: docs/PUBLICACAO.md
+O ZIP contém o projeto. Nenhuma hospedagem foi publicada nesta entrega.
+
+ATUALIZAR DA VERSÃO 1.0
+Pare o aplicativo e faça backup de instance/. Substitua os arquivos do
+projeto mantendo instance/, depois abra o iniciador novamente.
+Categorias existentes são preservadas. Confira a categoria de cada item.

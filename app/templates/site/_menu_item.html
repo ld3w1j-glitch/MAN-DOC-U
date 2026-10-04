@@ -1,0 +1,24 @@
+{% from 'partials/macros.html' import product_image, csrf_field %}
+<article class="mana-dish">
+  <a class="mana-dish-photo" href="{{ url_for('site.product',product_id=p.id) }}">
+    {{ product_image(p) }}
+    {% if not p.available_stock %}<span class="mana-dish-badge">Esgotado</span>
+    {% elif p.featured %}<span class="mana-dish-badge">Da casa</span>{% endif %}
+  </a>
+  <div class="mana-dish-copy">
+    <span class="mana-kicker">{{ p.category.name }}</span>
+    <h4><a href="{{ url_for('site.product',product_id=p.id) }}">{{ p.name }}</a></h4>
+    <p>{{ p.description|truncate(110) }}</p>
+    <div class="mana-dish-bottom">
+      <div>{% if p.variants %}<small>A partir de</small>{% endif %}<strong>{{ p.display_price|brl }}</strong></div>
+      {% if p.variants or not p.available_stock %}
+        <a class="button" href="{{ url_for('site.product',product_id=p.id) }}">{{ 'Escolher' if p.available_stock else 'Ver item' }}</a>
+      {% else %}
+        <form method="post" action="{{ url_for('site.add',product_id=p.id) }}">
+          {{ csrf_field() }}<input type="hidden" name="quantity" value="1">
+          <button class="button" {{ 'disabled' if not restaurant.accepting_orders or not attendant }}>Adicionar</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</article>

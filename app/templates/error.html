@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}{{ code }} · InvitStore{% endblock %}{% block content %}<section class="container empty-state"><span class="eyebrow">{{ code }}</span><h1>{{ message }}</h1><p>Você pode voltar para a loja e continuar por lá.</p><a class="button" href="{{ url_for('site.home') }}">Voltar para a vitrine</a></section>{% endblock %}

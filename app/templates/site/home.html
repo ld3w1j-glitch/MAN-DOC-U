@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% from 'partials/macros.html' import icon, csrf_field, product_image %}
+{% block content %}
+<section class="mana-reference-hero" id="inicio">
+  <div class="container mana-reference-hero-grid">
+    <div class="mana-reference-copy">
+      <span class="mana-kicker">MARMITARIA • SABOR DE CASA</span>
+      <h1>Seu almoço,<br>com sabor<br>de casa.</h1>
+      <p>Escolha seu prato e faça seu pedido de um jeito simples, rápido e direto pelo WhatsApp.</p>
+      <div class="mana-reference-actions">
+        <a class="button mana-primary-cta" href="#catalogo">Ver cardápio <span aria-hidden="true">›</span></a>
+        <a class="button secondary" href="{{ url_for('site.cart') }}">Fazer pedido</a>
+      </div>
+      <div class="mana-reference-notes" aria-label="Informações do atendimento">
+        <span>Feito com capricho</span>
+        {% if restaurant.delivery_enabled %}<span>Entrega disponível</span>{% endif %}
+        {% if restaurant.pickup_enabled %}<span>Retirada no local</span>{% endif %}
+      </div>
+    </div>
+    <div class="mana-reference-art" aria-hidden="true">
+      <img src="{{ url_for('static',filename='img/hero-marmita.webp') }}" alt="">
+    </div>
+  </div>
+</section>
+
+{% if hero_slides %}
+<section class="mana-home-slider" id="destaques">
+  <div class="container">
+    <div class="mana-slider-head">
+      <div>
+        <span class="mana-kicker">PRATOS ESCOLHIDOS PARA HOJE</span>
+        <h2>Veja o que está saindo agora</h2>
+        <p>Quando o chefe publica o cardápio do dia, os pratos entram automaticamente neste destaque em formato de slide.</p>
+      </div>
+      <div class="mana-slider-controls" aria-label="Controles do carrossel">
+        <button class="mana-slider-arrow" type="button" data-carousel-prev aria-label="Prato anterior">{{ icon('chevron-left') }}</button>
+        <button class="mana-slider-arrow" type="button" data-carousel-next aria-label="Próximo prato">{{ icon('chevron-right') }}</button>
+      </div>
+    </div>
+
+    <div class="mana-slider-shell" data-menu-carousel>
+      <div class="mana-slider-viewport" data-carousel-viewport tabindex="0">
+        <div class="mana-slider-track">
+          {% for p in hero_slides %}
+          <article class="mana-slide-card">
+            <a class="mana-slide-photo" href="{{ url_for('site.product',product_id=p.id) }}">
+              {{ product_image(p) }}
+              {% if p.featured %}<span class="mana-slide-badge">Da casa</span>{% endif %}
+            </a>
+            <div class="mana-slide-copy">
+              <span class="mana-kicker">{{ p.category.name }}</span>
+              <h3><a href="{{ url_for('site.product',product_id=p.id) }}">{{ p.name }}</a></h3>
+              <p>{{ p.description|truncate(120) }}</p>
+              <div class="mana-slide-bottom">
+                <div class="mana-slide-price">
+                  {% if p.variants %}<small>A partir de</small>{% endif %}
+                  <strong>{{ p.display_price|brl }}</strong>
+                </div>
+                <a class="button" href="{{ url_for('site.product',product_id=p.id) }}">Escolher</a>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mana-slider-dots" data-carousel-dots aria-label="Navegação dos pratos"></div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="mana-reference-menu" id="catalogo">
+  <div class="container">
+    <div class="mana-reference-title-row">
+      <div>
+        <span class="mana-kicker">ESCOLHA O QUE VAI PEDIR HOJE</span>
+        <h2>{{ 'Resultados para “' ~ q ~ '”' if q else daily_menu.title if daily_menu else 'Cardápio do dia' }}</h2>
+        <span class="mana-reference-wave" aria-hidden="true"></span>
+      </div>
+      <span class="mana-reference-count">{{ total }} {{ 'opção' if total == 1 else 'opções' }}</span>
+    </div>
+
+    {% if daily_menu and daily_menu.message %}<p class="mana-day-message">{{ daily_menu.message }}</p>{% endif %}
+    {% if restaurant.notice %}<div class="notice">{{ restaurant.notice }}</div>{% endif %}
+    {% if not restaurant.accepting_orders %}<div class="notice">Estamos com os pedidos pausados. Você pode consultar o cardápio e voltar mais tarde para pedir.</div>{% endif %}
+
+    <nav class="mana-reference-categories" aria-label="Categorias do cardápio">
+      {% for cat in categories %}
+        {% set catname = cat.name|lower %}
+        <a class="mana-category-tile {{ 'selected' if category_id == cat.id }}" href="{{ url_for('site.home',q=q,categoria=cat.id,ordem=order,_anchor='catalogo') }}" {% if category_id == cat.id %}aria-current="page"{% endif %}>
+          <span class="mana-category-art">
+            {% if 'bebida' in catname %}
+              <img src="{{ url_for('static',filename='img/mana/03_talheres.svg') }}" alt="">
+            {% elif 'sobremesa' in catname %}
+              <img src="{{ url_for('static',filename='img/mana/04_prato.svg') }}" alt="">
+            {% else %}
+              <img src="{{ url_for('static',filename='img/mana/01_tigela.svg') }}" alt="">
+            {% endif %}
+          </span>
+          <strong>{{ cat.name }}</strong>
+        </a>
+      {% endfor %}
+      {% if category_id %}<a class="mana-category-all" href="{{ url_for('site.home',q=q,ordem=order,_anchor='catalogo') }}">Ver tudo</a>{% endif %}
+    </nav>
+
+    <div class="mana-reference-tools">
+      <form role="search" method="get" action="{{ url_for('site.home',_anchor='catalogo') }}" class="mana-search">
+        {% if category_id %}<input name="categoria" value="{{ category_id }}" type="hidden">{% endif %}
+        <input name="ordem" value="{{ order }}" type="hidden">
+        <label class="sr-only" for="menu-q">Buscar no cardápio</label>
+        <input id="menu-q" name="q" value="{{ q }}" placeholder="Buscar no cardápio" maxlength="100" type="search">
+        <button type="submit" aria-label="Buscar">{{ icon('search') }}</button>
+      </form>
+      <form method="get" action="{{ url_for('site.home',_anchor='catalogo') }}">
+        <input name="q" value="{{ q }}" type="hidden">
+        {% if category_id %}<input name="categoria" value="{{ category_id }}" type="hidden">{% endif %}
+        <label class="sr-only" for="sort">Ordenar itens</label>
+        <select id="sort" name="ordem" data-auto-submit>
+          <option value="recentes" {{ 'selected' if order=='recentes' }}>Novidades</option>
+          <option value="menor-preco" {{ 'selected' if order=='menor-preco' }}>Menor preço</option>
+          <option value="maior-preco" {{ 'selected' if order=='maior-preco' }}>Maior preço</option>
+          <option value="nome" {{ 'selected' if order=='nome' }}>Nome</option>
+        </select>
+      </form>
+    </div>
+
+    {% for section in sections %}
+      <section class="mana-menu-section mana-reference-section" id="categoria-{{ section.category.id }}" data-menu-category="{{ section.category.id }}" aria-labelledby="titulo-categoria-{{ section.category.id }}">
+        <div class="mana-category-heading mana-reference-section-heading">
+          <span class="mana-category-symbol">{{ icon(section.icon) }}</span>
+          <div>
+            <h3 id="titulo-categoria-{{ section.category.id }}">{{ section.category.name }}</h3>
+            {% if section.description %}<p>{{ section.description }}</p>{% endif %}
+          </div>
+          <span class="mana-category-count">{{ section.products|length }} {{ 'opção' if section.products|length == 1 else 'opções' }}</span>
+        </div>
+        <div class="mana-menu-grid mana-reference-grid">
+          {% for p in section.products %}{% include 'site/_menu_item.html' %}{% endfor %}
+        </div>
+      </section>
+    {% else %}
+      <div class="mana-empty">
+        <img src="{{ url_for('static',filename='img/mana/13_panela.svg') }}" alt="">
+        <h3>{{ 'Não encontramos itens para esta seleção.' if q or category_id else 'Estamos preparando o cardápio.' }}</h3>
+        <p>{{ 'Experimente outra busca ou veja todas as categorias.' if q or category_id else 'Em breve, as opções da casa estarão aqui.' }}</p>
+        {% if q or category_id %}<a class="button secondary" href="{{ url_for('site.home',_anchor='catalogo') }}">Ver todo o cardápio</a>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mana-how" id="como-pedir">
+  <div class="container">
+    <div class="mana-how-heading"><span class="mana-kicker">SEM COMPLICAÇÃO</span><h2>Como pedir</h2></div>
+    <div class="mana-how-grid">
+      <article><b>1</b><img src="{{ url_for('static',filename='img/mana/04_prato.svg') }}" alt=""><h3>Escolha</h3><p>Veja os pratos, bebidas e sobremesas disponíveis hoje.</p></article>
+      <article><b>2</b><img src="{{ url_for('static',filename='img/mana/05_marmita.svg') }}" alt=""><h3>Monte o pedido</h3><p>Adicione as opções, quantidades e confira tudo antes de finalizar.</p></article>
+      <article><b>3</b><img src="{{ url_for('static',filename='img/mana/08_coracao_vapor.svg') }}" alt=""><h3>Finalize</h3><p>Informe entrega, pagamento e envie o pedido para o atendimento.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="mana-contact" id="contato">
+  <div class="container mana-contact-card">
+    <div><span class="mana-kicker">DEU FOME?</span><h2>Monte seu pedido</h2><p>Combine os últimos detalhes com nosso atendimento e finalize pelo WhatsApp.</p></div>
+    <a class="button mana-contact-button" href="{{ url_for('site.cart') }}">Ver meu pedido {{ icon('bag') }}</a>
+  </div>
+</section>
+
+{% if cart_count %}<a class="mana-sticky-cart" href="{{ url_for('site.cart') }}">{{ icon('bag') }} {{ cart_count }} {{ 'item' if cart_count == 1 else 'itens' }} no pedido <strong>Ver meu pedido</strong></a>{% endif %}
+{% endblock %}
